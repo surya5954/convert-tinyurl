@@ -29,6 +29,8 @@ router.post('/shorten', function (req, res, next) {
                 console.log(err.message);
             })
     } else {
+
+
         if (shortcode.match(/^[0-9a-zA-Z_]{4,}$/) == null) {
             res.status(422).send({
                 "ERROR": "Patter dosen't match"
@@ -36,7 +38,7 @@ router.post('/shorten', function (req, res, next) {
         }
         selectQuery(`SELECT id from URLShortner WHERE shortcode=?`, shortcode)
             .then((data) => {
-                if (data.id) {
+                if (data && data.id) {
                     res.status(409).send({
                         "ERROR": "Already in USE"
                     })
@@ -69,9 +71,11 @@ router.get("/:shortcode", (req, res, next) => {
                 res.status(404).send({
                     "ERROR": "shortcode is not found in the system"
                 })
+                throw new Error();
+            } else {
+                url = row.url;
+                return updateStats(shortcode);
             }
-            url = row.url;
-            return updateStats(shortcode);
         }).then(() => {
             res.writeHead(302, { 'Location': url }).send();
         })
