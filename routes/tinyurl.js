@@ -11,7 +11,7 @@ router.post('/shorten', function (req, res, next) {
     //startDate, lastSeenDate, redirectCount
     let startDate = new Date().toISOString();
 
-    if (url == "") {
+    if (url == undefined || url == "") {
         res.status(400).send({
             "Error": "URL is mandotory field"
         })
