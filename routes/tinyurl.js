@@ -16,7 +16,7 @@ router.post('/shorten', function (req, res, next) {
             "Error": "URL is mandotory field"
         })
     }
-    if (shortcode == "") {
+    if (shortcode == undefined || shortcode == "") {
         shortcode = createShortCode();
         excecuteQuery(`Replace into URLShortner (url, shortcode, startDate) VALUES ('${url}', '${shortcode}', '${startDate}')`)
             .then(() => {
@@ -27,7 +27,6 @@ router.post('/shorten', function (req, res, next) {
             })
             .catch(err => {
                 console.log(err.message);
-
             })
     } else {
         if (shortcode.match(/^[0-9a-zA-Z_]{4,}$/) == null) {
@@ -54,6 +53,8 @@ router.post('/shorten', function (req, res, next) {
 
                         })
                 }
+            }).catch(err => {
+                console.log(err.message);
             })
     }
 });
