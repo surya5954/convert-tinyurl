@@ -39,23 +39,19 @@ router.post('/shorten', function (req, res, next) {
         selectQuery(`SELECT id from URLShortner WHERE shortcode=?`, shortcode)
             .then((data) => {
                 if (data && data.id) {
-                    res.status(409).send({
-                        "ERROR": "Already in USE"
-                    })
+                    throw new Error();
                 } else {
-                    excecuteQuery(`Replace into URLShortner (url, shortcode, startDate) VALUES ('${url}', '${shortcode}', '${startDate}')`)
-                        .then(() => {
-                            res.status(201).send({
-                                'shortcode': shortcode
-                            })
-
-                        })
-                        .catch(err => {
-                            console.log(err.message);
-
-                        })
+                    return excecuteQuery(`Replace into URLShortner (url, shortcode, startDate) VALUES ('${url}', '${shortcode}', '${startDate}')`)
                 }
-            }).catch(err => {
+            }).then(() => {
+                res.status(201).send({
+                    'shortcode': shortcode
+                })
+            })
+            .catch(err => {
+                res.status(409).send({
+                    "ERROR": "Already in USE"
+                })
                 console.log(err.message);
             })
     }
