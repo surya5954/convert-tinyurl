@@ -1,12 +1,4 @@
-# express4.17.1-in-docker
-EXPRESS 4.17 SPA
-
-IMPORTANT NOTES:
-
-    1. Make sure you follow the steps mentioned under "PROJECT START STEPS" and ensure that the steps execute successfully. 
-    2. Make sure you follow the steps mentioned under "DOCKER START STEPS" and ensure that the steps execute successfully. 
-
-PROJECT START STEPS:
+## PROJECT START STEPS:
 
     Pre-requisites:
     1. Install node, npm
@@ -20,3 +12,13 @@ PROJECT START STEPS:
             - npm start
     
     2. Go to http://localhost:8080 in your browser to view it.
+    3. Make a POST call form Postman or similar to http://localhost:8080/shorten with body,
+            ```
+                {
+                   "url": "http://example.com",
+                   "shortcode": "example"
+                }
+            ```
+     4. Fetch the shortcode from above response.
+     5. Go to browser hit http://localhost:8080/<shortcode> , you will redirect to your Original URL
+     6. For getting stats about your URL hit, http://localhost:8080/<shortcode>/stats from browser
